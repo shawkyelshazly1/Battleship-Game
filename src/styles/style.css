@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: rgb(230, 230, 230);
+  font-family: "Roboto", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Header styles */
+.page__header {
+  top: 0;
+  width: 100%;
+  z-index: 5;
+  padding: 1rem;
+}
+
+.page__header .navbar__menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}
+
+/* Main styles */
+.page__main {
+  flex: auto;
+  display: flex;
+  gap: 5rem;
+  flex: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 1023px) {
+  .page__main {
+    flex-direction: column;
+  }
+}
+
+.left,
+.right {
+  display: grid;
+  width: 30rem;
+  height: 30rem;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  border: 1px solid rgb(34, 34, 34);
+}
+
+@media (max-width: 1025px) {
+  .left,
+  .right {
+    width: 28rem;
+    height: 28rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .left,
+  .right {
+    width: 20rem;
+    height: 20rem;
+  }
+}
+
+/* Footer styles */
+.page__footer {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  font-size: 20px;
+  margin-top: auto;
+}
+
+.page__footer .fa-github {
+  color: #24292f;
+  cursor: pointer;
+  transition: all 1s ease-in-out;
+}
+
+.page__footer .fa-github:hover {
+  transform: rotate(360deg);
+}
