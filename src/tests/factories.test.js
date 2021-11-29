@@ -1,17 +1,9 @@
-import { create } from "enhanced-resolve";
-import createShip from "../modules/ship";
+import Ship from "../modules/ship";
 
-test("should create a ship object", () => {
-  expect(createShip(2, [(1, 1), (1, 2)])).toMatchObject({
-    size: 2,
-    position: [(1, 1), (1, 2)],
-  });
+test("Ship Class: Checks if the hit function works fine   ", () => {
+  let ship = new Ship(3);
+  ship.hit("1-1");
+  ship.hit("1-2");
+
+  expect(ship.hits.length === 2 && ship.isSunk() === false).toBe(true);
 });
-
-test("should return true as ship isSunk when all positions in hits", () => {
-  let ship = createShip(2, ["1-A", "1-B"]);
-  ship.hit("1-A");
-  ship.hit("1-B");
-  expect(ship.isSunk()).toBe(true);
-});
-

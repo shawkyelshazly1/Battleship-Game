@@ -1,17 +1,24 @@
-export default function createShip(size, position) {
-  return {
-    size, // The ship length
-    position, // Array  the positions of the ship SAMPLE: ['1-A', '1-B']
-    hits: [], // positions that have benn hit
-    hit: function (index) {
-      // Hit function that takes  the location got hit and stores it in the array SAMPLE: '1-A'
-      this.hits.push(index);
-    },
-    isSunk: function () {
-      // return true||false if all positions been hit
-      return this.position.every((pos) => {
-        return this.hits.includes(pos);
-      });
-    },
-  };
+export default class Ship {
+  constructor(length) {
+    this.length = length; // Ship length
+    this.hits = []; // Tracks positions been hit in the ship
+  }
+  hit(position) {
+    // adds the position hit to the hits list if matches the critiera, position: "1-2" ("row-column")
+    if (
+      this.hits.includes(position) ||
+      position < 0 ||
+      position >= this.length
+    ) {
+      return;
+    }
+    this.hits.push(position);
+  }
+  isSunk() {
+    // returns true or false if all hits positions in the ship matches the length
+    return this.hits.length === this.length;
+  }
+  getLength() {
+    return this.length;
+  }
 }
