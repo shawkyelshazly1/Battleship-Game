@@ -27,7 +27,7 @@ export default class Gameboard {
     return [Number(row), Number(column)];
   }
 
-  // TODO: FIX checking empty if on edge
+  // TODO: Must split digonal checking
 
   possiblePlacementHorizontal(row, column, length) {
     // Checking if position exceeds the board edges 'invalid position'
@@ -46,21 +46,32 @@ export default class Gameboard {
      * Checking for neighbours to disallow placment unless 1 position away each direction including diagonal
      */
 
-    // Checking row above & below
-    for (let i = 0; i < length; i++) {
-      if (this.board[row - 1][column + i] !== null) return false;
-    }
-    for (let i = 0; i < length; i++) {
-      if (this.board[row + 1][column + i] !== null) return false;
-    }
-
-    //checking column right & left
-    for (let i = 0; i < 3; i++) {
-      if (this.board[row - 1 + i][column - 1] !== null) return false;
+    // Checking row above
+    if (row > 0) {
+      for (let i = 0; i < length; i++) {
+        if (this.board[row - 1][column + i] !== null) return false;
+      }
     }
 
-    for (let i = 0; i < 3; i++) {
-      if (this.board[row - 1 + i][column + length] !== null) return false;
+    // Checking row below
+    if (row < SIZE - 1) {
+      for (let i = 0; i < length; i++) {
+        if (this.board[row + 1][column + i] !== null) return false;
+      }
+    }
+
+    //checking column left
+    if (column > 0) {
+      for (let i = 0; i < 3; i++) {
+        if (this.board[row - 1 + i][column - 1] !== null) return false;
+      }
+    }
+
+    //checking column right
+    if (column < SIZE - 1) {
+      for (let i = 0; i < 3; i++) {
+        if (this.board[row - 1 + i][column + length] !== null) return false;
+      }
     }
 
     return true;
@@ -83,22 +94,32 @@ export default class Gameboard {
      * Checking for neighbours to disallow placment unless 1 position away each direction including diagonal
      */
 
-    //checking column right & left
-
-    for (let i = 0; i < length; i++) {
-      if (this.board[row + i][column + 1] !== null) return false;
+    //checking column right
+    if (column < SIZE - 1) {
+      for (let i = 0; i < length; i++) {
+        if (this.board[row + i][column + 1] !== null) return false;
+      }
     }
 
-    for (let i = 0; i < length; i++) {
-      if (this.board[row + i][column - 1] !== null) return false;
+    //checking column left
+    if (column > 0) {
+      for (let i = 0; i < length; i++) {
+        if (this.board[row + i][column - 1] !== null) return false;
+      }
     }
 
-    // Checking row above & below
-    for (let i = 0; i < 3; i++) {
-      if (this.board[row - 1][column - 1 + i] !== null) return false;
+    // Checking row above
+    if (row > 0) {
+      for (let i = 0; i < 3; i++) {
+        if (this.board[row - 1][column - 1 + i] !== null) return false;
+      }
     }
-    for (let i = 0; i < 3; i++) {
-      if (this.board[row + length][column - 1 + i] !== null) return false;
+
+    // Checking row below
+    if (row < SIZE - 1) {
+      for (let i = 0; i < 3; i++) {
+        if (this.board[row + length][column - 1 + i] !== null) return false;
+      }
     }
   }
 }
