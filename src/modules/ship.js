@@ -1,10 +1,26 @@
 export default class Ship {
-  constructor(length) {
+  constructor(length, startRow, startCol, alignment) {
     this.length = length; // Ship length
     this.hits = []; // Tracks positions been hit in the ship
+    this.startRow = startRow;
+    this.startCol = startCol;
+    this.alignment = alignment;
   }
-  hit(position) {
-    // adds the position hit to the hits list if matches the critiera, position: "1-2" ("row-column")
+
+  // adds the position hit to the hits list if matches the critiera, coordinates: "1-2" ("row-column")
+  hit(coordinates) {
+    let position = null;
+    switch (this.alignment) {
+      case "horizontal":
+        position = coordinates[1] - this.startCol;
+        break;
+      case "vertical":
+        position = coordinates[0] - this.startRow;
+        break;
+      default:
+        break;
+    }
+
     if (
       this.hits.includes(position) ||
       position < 0 ||
@@ -14,10 +30,13 @@ export default class Ship {
     }
     this.hits.push(position);
   }
+
+  // returns true or false if all hits positions in the ship matches the length
   isSunk() {
-    // returns true or false if all hits positions in the ship matches the length
     return this.hits.length === this.length;
   }
+
+  // Returns ship's length
   getLength() {
     return this.length;
   }
