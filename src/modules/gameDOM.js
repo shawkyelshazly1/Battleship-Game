@@ -10,6 +10,7 @@ export default class GameDOM {
       2- Allow drag & drop of ships 
    */
 
+  // Constructor, querying both boards, setting current player var, @params: players GameBoards
   constructor(playerGameBoard, computerGameBoard) {
     this.pBoard = document.querySelector(".left");
     this.cBoard = document.querySelector(".right");
@@ -18,6 +19,8 @@ export default class GameDOM {
     this.computerGameBoard = computerGameBoard;
   }
 
+  // Initializing both boards visuals with divs, allowing computer board to recieve click event with playerAttack
+  // setting coordinates as data-coord "dataset" on each div
   initializeBoards() {
     this.cBoard.addEventListener("click", (e) => {
       this.currentPlayer == "player" ? this.playerAttack(e) : null;
@@ -45,6 +48,7 @@ export default class GameDOM {
     }
   }
 
+  // Helper Function:: switching active board to recieve attack based on current player turn
   switchBoard() {
     switch (this.currentPlayer) {
       case "player":
@@ -60,6 +64,7 @@ export default class GameDOM {
     }
   }
 
+  // Helper Function:: disabling board if won't recieve attack "for visualization only", @params: targeted board
   disableFields(board) {
     let elementNodes = [...board.children];
     elementNodes.forEach((node) => {
@@ -67,6 +72,7 @@ export default class GameDOM {
     });
   }
 
+  // Helper Function:: enabling board to recieve attack "for visualization only" , @params: targeted board
   enableFields(board) {
     let elementNodes = [...board.children];
     elementNodes.forEach((node) => {
@@ -74,6 +80,7 @@ export default class GameDOM {
     });
   }
 
+  // Helper Function:: switching player turn by setting currentPlayer variable as well as playing computerAttack on it's turn
   switchTurn() {
     if (this.currentPlayer === "player") {
       this.currentPlayer = "computer";
@@ -83,11 +90,13 @@ export default class GameDOM {
     }
   }
 
+  // computer attack by generating random coordinates with recursive call till a successful or missed shot.
+  // checking if all ships sunk to gameover as well as switching turns & boards on missed shots
   computerAttack() {
     let row = Math.floor(Math.random() * SIZE);
     let col = Math.floor(Math.random() * SIZE);
     let coords = `${row}-${col}`;
-    console.log(coords);
+
     let outcome = this.playerGameBoard.recieveAttack(coords);
 
     if (this.successfulShot(outcome, this.pBoard, coords)) {
@@ -100,6 +109,9 @@ export default class GameDOM {
       this.computerAttack();
     }
   }
+
+  // player attack on board click event, @params: coordinates from targeted element dataset "data-coord"
+  // checking if all ships sunk to gameover as well as switching turns & boards on missed shots
   playerAttack(e) {
     let coords = e.target.dataset.coord;
     let outcome = this.computerGameBoard.recieveAttack(coords);
@@ -111,6 +123,9 @@ export default class GameDOM {
     }
   }
 
+  // Helper Function: checking if shot was successful by checking if outcome is a Ship instance as well as checking if ship is sunk or not
+  // highlights the ship hit or the ship if sunk
+  // @params: outcome: recieveAttack function return, targeted board, coordinates hit
   successfulShot(outcome, board, coords) {
     if (outcome instanceof Ship) {
       outcome.isSunk()
@@ -121,6 +136,8 @@ export default class GameDOM {
     return false;
   }
 
+  //checking if shot was a missed shot if outcome param is true to highlight the cell
+  // @params: outcome: recieveAttack function return, targeted board, coordinates hit
   MissedShot(outcome, board, coords) {
     if (outcome === true) {
       this.highlightMissedShot(board, coords);
@@ -130,16 +147,22 @@ export default class GameDOM {
     return false;
   }
 
+  // Helper Function: highlighting the ship hit by setting class on the cell
+  // @params: targeted board, coordinates
   highlightShipHit(board, coords) {
     board.querySelector(`[data-coord="${coords}"]`).classList.add("ship-hit");
   }
 
+  // Helper Function: highlighting the missed shot by setting class on the cell
+  // @params: targeted board, coordinates
   highlightMissedShot(board, coords) {
     board
       .querySelector(`[data-coord="${coords}"]`)
       .classList.add("missed-shot");
   }
 
+  // Helper Function: highlighting the sunk ship by setting class on the ship cells placement
+  // @params: ship object, targeted board
   highlightSunkShip(ship, board) {
     ship.coordinatesHit.forEach((coord) => {
       board
@@ -151,6 +174,8 @@ export default class GameDOM {
     });
   }
 
+  // Helper Function: checking if game is over by checking if all ships on targeted board are sunk
+  // @params: targeted board
   checkGameOver(board) {
     if (board.AllShipsSunk()) {
       let startBtn = document.querySelector(".start-game-btn");
@@ -167,12 +192,14 @@ export default class GameDOM {
     }
   }
 
+  // start game function to initialize the board and setting the starting current player
   startGame() {
     this.initializeBoards();
     this.currentPlayer = "player";
     this.switchBoard();
   }
 
+  // reset game function to reset all boards as well as player's game boards
   resetGame() {
     this.pBoard.textContent = "";
     this.cBoard.textContent = "";
