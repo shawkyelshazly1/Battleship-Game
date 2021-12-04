@@ -1,8 +1,15 @@
+import GameDOM from "./gameDOM";
+
 export default class Game {
-  constructor() {
+  constructor(gameDom) {
     this.gameover = false;
+    this.gameDom = gameDom;
   }
   startGame() {
-    while (!this.gameover) {}
+    this.gameDom.startGame();
+  }
+
+  restartGame() {
+    this.gameover = false;
   }
 }

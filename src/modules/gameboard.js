@@ -1,3 +1,5 @@
+import Ship from "./ship";
+
 const SIZE = 10;
 
 export default class Gameboard {
@@ -7,6 +9,7 @@ export default class Gameboard {
     this.missedShots = [];
     this.initializeBoard();
     this.ships = [];
+    this.placeRandomShips();
   }
 
   // Initializing the board 2D array with null values & missed shots with false value
@@ -215,10 +218,7 @@ export default class Gameboard {
 
   // Checks if all ships have been sunk
   AllShipsSunk() {
-    for (let index in this.ships) {
-      if (ships[index].isSunk() === false) return false;
-    }
-    return true;
+    return this.ships.every((ship) => ship.isSunk());
   }
 
   // Printing board visualization
@@ -234,4 +234,30 @@ export default class Gameboard {
 
     console.log(output);
   }
+
+  placeRandomShips() {
+    let i = 0;
+    let shipsLength = [5, 4, 3, 3, 2];
+    while (shipsLength.length > 0) {
+      let row = Math.floor(Math.random() * SIZE);
+      let col = Math.floor(Math.random() * SIZE);
+      let outcome = this.addShip(
+        new Ship(shipsLength[i], row, col, "horizontal"),
+        `${row}-${col}`,
+        "horizontal"
+      );
+      if (outcome) {
+        shipsLength.shift();
+      }
+    }
+  }
+
+  resetBoard() {
+    this.board = [];
+    this.missedShots = [];
+    this.initializeBoard();
+    this.ships = [];
+    this.placeRandomShips();
+  }
+
 }

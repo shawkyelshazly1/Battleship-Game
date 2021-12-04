@@ -55,7 +55,6 @@ body {
   height: 30rem;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  border: 1px solid rgb(34, 34, 34);
 }
 
 @media (max-width: 1025px) {
@@ -94,4 +93,45 @@ body {
 
 .page__footer .fa-github:hover {
   transform: rotate(360deg);
+}
+.board-cell {
+  display: flex;
+  border: 1px solid rgb(34, 34, 34);
+  cursor: crosshair;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.board-cell:hover {
+  background-color: beige;
+}
+
+.start-game-btn {
+  display: block;
+  position: absolute;
+  margin: auto;
+  padding: 1.5rem 5rem;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  font-size: 35px;
+  background-color: cadetblue;
+  color: white;
+  font-weight: bolder;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.start-game-btn:focus {
+  transform: scale(0.8);
+}
+
+.start-game-btn.hidden {
+  display: none;
+}
+
+.board-cell.disabled {
+  background-color: rgba(197, 197, 197, 0.493);
+  cursor: not-allowed;
 }
