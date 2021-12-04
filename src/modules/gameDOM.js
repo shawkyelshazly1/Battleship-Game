@@ -1,15 +1,13 @@
 import Gameboard from "./gameboard";
+import Ship from "./ship";
 
 const SIZE = 10;
 
 export default class GameDOM {
   /*
    *TODO:
-      1- Mark missed shots location
-      2- allow attacks only on non-clicked cells
-      3- highlight hit shots
-      4- highlight sunk ships
-      5- GameDOM comments  
+      1- GameDOM comments 
+      2- Allow drag & drop of ships 
    */
 
   constructor(playerGameBoard, computerGameBoard) {
@@ -21,10 +19,6 @@ export default class GameDOM {
   }
 
   initializeBoards() {
-    this.pBoard.addEventListener("click", (e) => {
-      this.currentPlayer == "computer" ? this.computerAttack(e) : null;
-    });
-
     this.cBoard.addEventListener("click", (e) => {
       this.currentPlayer == "player" ? this.playerAttack(e) : null;
     });
@@ -81,33 +75,93 @@ export default class GameDOM {
   }
 
   switchTurn() {
-    this.currentPlayer === "player"
-      ? (this.currentPlayer = "computer")
-      : (this.currentPlayer = "player");
+    if (this.currentPlayer === "player") {
+      this.currentPlayer = "computer";
+      this.computerAttack();
+    } else {
+      this.currentPlayer = "player";
+    }
   }
 
-  computerAttack(e) {
-    let coords = e.target.dataset.coord;
-    this.playerGameBoard.recieveAttack(coords);
-    this.checkGameOver(this.playerGameBoard);
-    this.switchTurn();
-    this.switchBoard();
-  }
+  computerAttack() {
+    let row = Math.floor(Math.random() * SIZE);
+    let col = Math.floor(Math.random() * SIZE);
+    let coords = `${row}-${col}`;
+    console.log(coords);
+    let outcome = this.playerGameBoard.recieveAttack(coords);
 
+    if (this.successfulShot(outcome, this.pBoard, coords)) {
+      this.checkGameOver(this.playerGameBoard);
+      this.computerAttack();
+    } else if (this.MissedShot(outcome, this.pBoard, coords)) {
+      this.switchTurn();
+      this.switchBoard();
+    } else {
+      this.computerAttack();
+    }
+  }
   playerAttack(e) {
     let coords = e.target.dataset.coord;
-    this.computerGameBoard.recieveAttack(coords);
-    this.checkGameOver(this.computerGameBoard);
-    this.switchTurn();
-    this.switchBoard();
+    let outcome = this.computerGameBoard.recieveAttack(coords);
+    if (this.successfulShot(outcome, this.cBoard, coords)) {
+      this.checkGameOver(this.computerGameBoard);
+    } else if (this.MissedShot(outcome, this.cBoard, coords)) {
+      this.switchTurn();
+      this.switchBoard();
+    }
+  }
+
+  successfulShot(outcome, board, coords) {
+    if (outcome instanceof Ship) {
+      outcome.isSunk()
+        ? this.highlightSunkShip(outcome, board)
+        : this.highlightShipHit(board, coords);
+      return true;
+    }
+    return false;
+  }
+
+  MissedShot(outcome, board, coords) {
+    if (outcome === true) {
+      this.highlightMissedShot(board, coords);
+      return true;
+    }
+
+    return false;
+  }
+
+  highlightShipHit(board, coords) {
+    board.querySelector(`[data-coord="${coords}"]`).classList.add("ship-hit");
+  }
+
+  highlightMissedShot(board, coords) {
+    board
+      .querySelector(`[data-coord="${coords}"]`)
+      .classList.add("missed-shot");
+  }
+
+  highlightSunkShip(ship, board) {
+    ship.coordinatesHit.forEach((coord) => {
+      board
+        .querySelector(`[data-coord="${coord[0]}-${coord[1]}"]`)
+        .classList.remove("ship-hit");
+      board
+        .querySelector(`[data-coord="${coord[0]}-${coord[1]}"]`)
+        .classList.add("sunk-ship");
+    });
   }
 
   checkGameOver(board) {
     if (board.AllShipsSunk()) {
-      console.log(`Winner is: ${this.currentPlayer}`);
       let startBtn = document.querySelector(".start-game-btn");
+      let headline = document.querySelector(".headline");
+
+      headline.textContent = `Winner is: ${this.currentPlayer}`;
+      headline.classList.toggle("hidden");
+
       startBtn.textContent = "Let's Play Again";
       startBtn.classList.toggle("hidden");
+
       this.resetGame();
       return;
     }

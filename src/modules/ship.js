@@ -5,6 +5,7 @@ export default class Ship {
     this.startRow = startRow;
     this.startCol = startCol;
     this.alignment = alignment;
+    this.coordinatesHit = [];
   }
 
   // adds the position hit to the hits list if matches the critiera, coordinates: "1-2" ("row-column")
@@ -26,9 +27,11 @@ export default class Ship {
       position < 0 ||
       position >= this.length
     ) {
-      return;
+      return false;
     }
     this.hits.push(position);
+    this.coordinatesHit.push(coordinates);
+    return true;
   }
 
   // returns true or false if all hits positions in the ship matches the length

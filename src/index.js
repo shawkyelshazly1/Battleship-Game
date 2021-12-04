@@ -4,6 +4,7 @@ import GameDOM from "./modules/gameDOM";
 import "./styles/style.css";
 
 let startBtn = document.querySelector(".start-game-btn");
+let headline = document.querySelector(".headline");
 
 let playerGameBoard = new Gameboard();
 let computerGameBoard = new Gameboard();
@@ -14,4 +15,5 @@ let game = new Game(gameDom);
 startBtn.addEventListener("click", () => {
   game.startGame();
   startBtn.classList.toggle("hidden");
+  headline.classList.toggle("hidden");
 });

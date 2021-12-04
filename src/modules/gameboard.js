@@ -210,10 +210,16 @@ export default class Gameboard {
     let position = this.transformPosition(pos);
     if (this.board[position[0]][position[1]] !== null) {
       let targetedShip = this.board[position[0]][position[1]];
-      targetedShip.hit(position);
+      if (targetedShip.hit(position)) {
+        return targetedShip;
+      } else {
+        return false;
+      }
     } else if (!this.missedShots[position[0]][position[1]] === true) {
       this.missedShots[position[0]][position[1]] = true;
+      return true;
     }
+    return false;
   }
 
   // Checks if all ships have been sunk
@@ -259,5 +265,4 @@ export default class Gameboard {
     this.ships = [];
     this.placeRandomShips();
   }
-
 }
