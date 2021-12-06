@@ -6,11 +6,10 @@ import "./styles/style.css";
 let startBtn = document.querySelector(".start-game-btn");
 let headline = document.querySelector(".headline");
 
-let playerGameBoard = new Gameboard();
-let computerGameBoard = new Gameboard();
 
-let gameDom = new GameDOM(playerGameBoard, computerGameBoard);
-let game = new Game(gameDom);
+let game = new Game();
+
+
 
 startBtn.addEventListener("click", () => {
   game.startGame();

@@ -4,12 +4,6 @@ import Ship from "./ship";
 const SIZE = 10;
 
 export default class GameDOM {
-  /*
-   *TODO:
-      1- GameDOM comments 
-      2- Allow drag & drop of ships 
-   */
-
   // Constructor, querying both boards, setting current player var, @params: players GameBoards
   constructor(playerGameBoard, computerGameBoard) {
     this.pBoard = document.querySelector(".left");
@@ -17,6 +11,7 @@ export default class GameDOM {
     this.currentPlayer = null;
     this.playerGameBoard = playerGameBoard;
     this.computerGameBoard = computerGameBoard;
+    this.computerGameBoard.placeRandomShips();
   }
 
   // Initializing both boards visuals with divs, allowing computer board to recieve click event with playerAttack

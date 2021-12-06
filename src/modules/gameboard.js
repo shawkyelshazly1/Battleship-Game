@@ -3,13 +3,12 @@ import Ship from "./ship";
 const SIZE = 10;
 
 export default class Gameboard {
-  // Class Constructor @params: board, missedShots
+  // Class Constructor
   constructor() {
     this.board = [];
     this.missedShots = [];
     this.initializeBoard();
     this.ships = [];
-    this.placeRandomShips();
   }
 
   // Initializing the board 2D array with null values & missed shots with false value
@@ -241,16 +240,18 @@ export default class Gameboard {
     console.log(output);
   }
 
+  // placing ships randomly on the board
   placeRandomShips() {
     let i = 0;
     let shipsLength = [5, 4, 3, 3, 2];
     while (shipsLength.length > 0) {
       let row = Math.floor(Math.random() * SIZE);
       let col = Math.floor(Math.random() * SIZE);
+      let alignment = parseInt(Math.random() * 2) ? "horizontal" : "vertical";
       let outcome = this.addShip(
-        new Ship(shipsLength[i], row, col, "horizontal"),
+        new Ship(shipsLength[i], row, col, alignment),
         `${row}-${col}`,
-        "horizontal"
+        alignment
       );
       if (outcome) {
         shipsLength.shift();
@@ -258,11 +259,12 @@ export default class Gameboard {
     }
   }
 
+  // resetting board by initializing the constructor again
   resetBoard() {
     this.board = [];
     this.missedShots = [];
     this.initializeBoard();
     this.ships = [];
-    this.placeRandomShips();
+    
   }
 }

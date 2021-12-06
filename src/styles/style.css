@@ -49,7 +49,8 @@ body {
 }
 
 .left,
-.right {
+.right,
+.placement-board {
   display: grid;
   width: 30rem;
   height: 30rem;
@@ -59,7 +60,8 @@ body {
 
 @media (max-width: 1025px) {
   .left,
-  .right {
+  .right,
+  placement-board {
     width: 28rem;
     height: 28rem;
   }
@@ -67,7 +69,8 @@ body {
 
 @media (max-width: 767px) {
   .left,
-  .right {
+  .right,
+  placement-board {
     width: 20rem;
     height: 20rem;
   }
@@ -158,4 +161,63 @@ body {
 .board-cell.missed-shot {
   cursor: not-allowed;
   background-color: rgb(82, 218, 161);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  border-radius: 10px;
+  border: 2px solid cadetblue;
+  padding: 20px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content .change-alignment-btn {
+  padding: 0.8rem 2rem;
+  border: none;
+  outline: none;
+  background-color: cadetblue;
+  color: white;
+  font-size: 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.placement-board-cell {
+  display: flex;
+  border: 1px solid rgb(34, 34, 34);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.placement-board-cell.invalid {
+  background-color: rgb(235, 62, 96);
+}
+
+.placement-board-cell.valid {
+  background-color: rgb(80, 226, 67);
+}
+
+.placement-board-cell.placed {
+  background-color: rgb(47, 63, 93);
 }
